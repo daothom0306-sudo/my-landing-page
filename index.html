@@ -2,399 +2,393 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f7fb">
-  <title>AN THAI | Hệ thống tích điểm</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AN THAI | Hệ thống tích điểm</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    :root {
-      --red: #e00000;
-      --deep-red: #970000;
-      --background: #f7f7fb;
-      --text: #303030;
-    }
+:root {
+  --red: #e00000;
+  --dark-red: #990000;
+  --background: #f7f7fb;
+  --text: #303030;
+}
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--background);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-    /* PAGE LAYOUT */
-    .page {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 44% 56%;
-      align-items: center;
-      padding: 5.8vh 4.1vw;
-      position: relative;
-      isolation: isolate;
-    }
+/* MAIN LAYOUT */
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 44% 56%;
+  align-items: center;
+  padding: 5.8vh 4.1vw;
+  position: relative;
+  isolation: isolate;
+}
 
-    /* BACKGROUND DECORATION */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: -1;
-    }
+/* BACKGROUND */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+}
 
-    .orb-one {
-      width: 850px;
-      height: 850px;
-      top: -400px;
-      left: -200px;
-      background: rgba(255, 255, 255, 0.65);
-    }
+.orb-one {
+  width: 850px;
+  height: 850px;
+  top: -400px;
+  left: -200px;
+  background: rgba(255,255,255,.65);
+}
 
-    .orb-two {
-      width: 720px;
-      height: 720px;
-      top: -80px;
-      right: -100px;
-      background: rgba(240, 238, 249, 0.55);
-    }
+.orb-two {
+  width: 720px;
+  height: 720px;
+  top: -80px;
+  right: -100px;
+  background: rgba(240,238,249,.55);
+}
 
-    .orb-three {
-      width: 520px;
-      height: 520px;
-      bottom: -400px;
-      right: 5%;
-      background: rgba(255, 255, 255, 0.45);
-    }
+.orb-three {
+  width: 520px;
+  height: 520px;
+  bottom: -400px;
+  right: 5%;
+  background: rgba(255,255,255,.45);
+}
 
-    /* LEFT RED PANEL */
-    .visual-card {
-      width: 100%;
-      max-width: 790px;
-      aspect-ratio: 0.88;
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      border-radius: 27px;
+/* LEFT RED PANEL */
+.visual-card {
+  width: 100%;
+  max-width: 790px;
+  aspect-ratio: .88;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 27px;
+  background: #990000;
+}
 
-      /* Red background covers the entire panel */
-      background: linear-gradient(
-        145deg,
-        #9b0000 0%,
-        #bd0000 48%,
-        #650000 100%
-      );
-    }
+/* VIDEO WRAPPER */
+.video-area {
+  position: absolute;
+  z-index: 1;
+  left: 5%;
+  bottom: 0;
+  width: 90%;
+  height: 48%;
+  overflow: hidden;
+  background: #990000;
+}
 
-    /* GLASS VIDEO
-       White pixels blend into the red background.
-       Video sits in the lower part of the panel.
-    */
-    .visual-card video {
-      position: absolute;
-      z-index: 1;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 69%;
-      display: block;
-      object-fit: contain;
-      object-position: center bottom;
+/* SMALLER GLASS VIDEO */
+.video-area video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  mix-blend-mode: multiply;
+}
 
-      mix-blend-mode: multiply;
-    }
+/* HEADLINE */
+.headline {
+  position: absolute;
+  z-index: 2;
+  top: 6.5%;
+  right: 7%;
+  width: 84%;
+  color: #fff;
+  text-align: right;
+  font-size: clamp(24px, 2.65vw, 46px);
+  line-height: 1.38;
+  font-weight: 700;
+  letter-spacing: -.7px;
+  pointer-events: none;
+}
 
-    /* HEADLINE */
-    .headline {
-      position: absolute;
-      z-index: 2;
-      top: 6.5%;
-      right: 7%;
-      width: 84%;
+/* RIGHT PANEL */
+.right-panel {
+  width: 100%;
+  max-width: 760px;
+  justify-self: center;
+  padding: 20px 1.5vw 20px 6.2vw;
+}
 
-      color: #ffffff;
-      text-align: right;
-      font-size: clamp(24px, 2.65vw, 46px);
-      line-height: 1.38;
-      font-weight: 700;
-      letter-spacing: -0.7px;
+/* LOGO */
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: clamp(70px, 9.5vw, 160px);
+}
 
-      text-shadow: 0 2px 10px rgba(80, 0, 0, 0.12);
-      pointer-events: none;
-    }
+.brand-logo {
+  display: block;
+  width: min(100%, 350px);
+  height: auto;
+  object-fit: contain;
+}
 
-    /* RIGHT PANEL */
-    .right-panel {
-      width: 100%;
-      max-width: 760px;
-      justify-self: center;
-      padding: 20px 1.5vw 20px 6.2vw;
-    }
+/* LOGIN */
+.login-form {
+  width: 100%;
+}
 
-    /* OFFICIAL LOGO */
-    .brand {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      margin-bottom: clamp(70px, 9.5vw, 160px);
-    }
+.field {
+  margin-bottom: 48px;
+}
 
-    .brand-logo {
-      display: block;
-      width: min(100%, 350px);
-      height: auto;
-      object-fit: contain;
-    }
+.field label {
+  display: block;
+  font-size: clamp(18px, 1.5vw, 25px);
+  margin-bottom: 12px;
+  color: #363636;
+}
 
-    /* LOGIN FORM */
-    .login-form {
-      width: 100%;
-    }
+.field input {
+  display: block;
+  width: 100%;
+  height: 72px;
+  padding: 0 29px;
+  border: 1px solid #a5a5a5;
+  border-radius: 16px;
+  background: rgba(255,255,255,.12);
+  color: #151515;
+  font-family: inherit;
+  font-size: 20px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
 
-    .field {
-      margin-bottom: 48px;
-    }
+.field:first-child input {
+  border-color: #d94747;
+}
 
-    .field label {
-      display: block;
-      font-size: clamp(18px, 1.5vw, 25px);
-      margin-bottom: 12px;
-      color: #363636;
-    }
+.field input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(224,0,0,.07);
+}
 
-    .field input {
-      display: block;
-      width: 100%;
-      height: 72px;
-      padding: 0 29px;
+.field input::placeholder {
+  color: #858585;
+  opacity: 1;
+}
 
-      border: 1px solid #a5a5a5;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.12);
+.password-wrap {
+  position: relative;
+}
 
-      color: #151515;
-      font-family: inherit;
-      font-size: 20px;
-      outline: none;
+.password-wrap input {
+  padding-right: 65px;
+}
 
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #777;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 18px;
+}
 
-    .field:first-child input {
-      border-color: #d94747;
-    }
+/* LOGIN BUTTON */
+.login-button {
+  width: 100%;
+  min-height: 67px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    #ff0808 0%,
+    #c90000 100%
+  );
+  color: #fff;
+  font-family: inherit;
+  font-size: 21px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 13px 23px rgba(220,0,0,.19);
+  transition: transform .2s, box-shadow .2s;
+}
 
-    .field input:focus {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(224, 0, 0, 0.07);
-    }
+.login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(220,0,0,.24);
+}
 
-    .field input::placeholder {
-      color: #858585;
-      opacity: 1;
-    }
+.login-button:active {
+  transform: translateY(0);
+}
 
-    .password-wrap {
-      position: relative;
-    }
+.message {
+  display: none;
+  margin-top: 18px;
+  color: #b00000;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
 
-    .password-wrap input {
-      padding-right: 65px;
-    }
+/* TABLET */
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: 42% 58%;
+    padding: 30px 3vw;
+  }
 
-    .toggle-password {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
+  .visual-card {
+    aspect-ratio: .78;
+  }
 
-      border: 0;
-      background: transparent;
-      color: #777;
-      cursor: pointer;
-      padding: 8px;
-      font-size: 18px;
-    }
+  .video-area {
+    height: 48%;
+  }
 
-    /* RED LOGIN BUTTON */
-    .login-button {
-      width: 100%;
-      min-height: 67px;
-      border: 0;
-      border-radius: 14px;
+  .headline {
+    font-size: clamp(20px, 3vw, 30px);
+  }
 
-      background: linear-gradient(
-        180deg,
-        #ff0808 0%,
-        #c90000 100%
-      );
+  .right-panel {
+    padding-left: 5vw;
+  }
 
-      color: #ffffff;
-      font-family: inherit;
-      font-size: 21px;
-      font-weight: 500;
-      cursor: pointer;
+  .brand {
+    margin-bottom: 65px;
+  }
 
-      box-shadow: 0 13px 23px rgba(220, 0, 0, 0.19);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+  .brand-logo {
+    width: min(100%, 300px);
+  }
 
-    .login-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 28px rgba(220, 0, 0, 0.24);
-    }
+  .field {
+    margin-bottom: 30px;
+  }
 
-    .login-button:active {
-      transform: translateY(0);
-    }
+  .field input {
+    height: 60px;
+    padding: 0 18px;
+    font-size: 17px;
+  }
 
-    .message {
-      display: none;
-      margin-top: 18px;
-      color: #b00000;
-      font-size: 14px;
-      line-height: 1.5;
-      text-align: center;
-    }
+  .login-button {
+    min-height: 58px;
+  }
+}
 
-    /* TABLET */
-    @media (max-width: 900px) {
-      .page {
-        grid-template-columns: 42% 58%;
-        padding: 30px 3vw;
-      }
+/* MOBILE */
+@media (max-width: 600px) {
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+    padding: 22px 20px 40px;
+  }
 
-      .visual-card {
-        aspect-ratio: 0.78;
-      }
+  .visual-card {
+    width: 100%;
+    max-width: 440px;
+    aspect-ratio: .95;
+  }
 
-      .visual-card video {
-        height: 67%;
-      }
+  .video-area {
+    left: 5%;
+    width: 90%;
+    height: 48%;
+  }
 
-      .headline {
-        font-size: clamp(20px, 3vw, 30px);
-      }
+  .headline {
+    top: 6%;
+    right: 6%;
+    width: 88%;
+    font-size: clamp(23px, 6vw, 31px);
+  }
 
-      .right-panel {
-        padding-left: 5vw;
-      }
+  .right-panel {
+    padding: 0;
+    max-width: 440px;
+  }
 
-      .brand {
-        margin-bottom: 65px;
-      }
+  .brand {
+    margin-bottom: 42px;
+  }
 
-      .brand-logo {
-        width: min(100%, 300px);
-      }
+  .brand-logo {
+    width: min(100%, 340px);
+  }
 
-      .field {
-        margin-bottom: 30px;
-      }
+  .field {
+    margin-bottom: 26px;
+  }
 
-      .field input {
-        height: 60px;
-        padding: 0 18px;
-        font-size: 17px;
-      }
+  .field label {
+    font-size: 18px;
+  }
 
-      .login-button {
-        min-height: 58px;
-      }
-    }
+  .field input {
+    height: 58px;
+    border-radius: 12px;
+  }
 
-    /* MOBILE */
-    @media (max-width: 600px) {
-      .page {
-        display: flex;
-        flex-direction: column;
-        gap: 34px;
-        padding: 22px 20px 40px;
-      }
+  .login-button {
+    min-height: 58px;
+    border-radius: 12px;
+    font-size: 18px;
+  }
+}
 
-      .visual-card {
-        width: 100%;
-        max-width: 440px;
-        aspect-ratio: 0.95;
-      }
-
-      .visual-card video {
-        height: 69%;
-      }
-
-      .headline {
-        top: 6%;
-        right: 6%;
-        width: 88%;
-        font-size: clamp(23px, 6vw, 31px);
-      }
-
-      .right-panel {
-        padding: 0;
-        max-width: 440px;
-      }
-
-      .brand {
-        margin-bottom: 42px;
-      }
-
-      .brand-logo {
-        width: min(100%, 340px);
-      }
-
-      .field {
-        margin-bottom: 26px;
-      }
-
-      .field label {
-        font-size: 18px;
-      }
-
-      .field input {
-        height: 58px;
-        border-radius: 12px;
-      }
-
-      .login-button {
-        min-height: 58px;
-        border-radius: 12px;
-        font-size: 18px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        transition: none !important;
-      }
-    }
-  </style>
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+  }
+}
+</style>
 </head>
 
 <body>
-  <main class="page">
 
-    <div class="orb orb-one"></div>
-    <div class="orb orb-two"></div>
-    <div class="orb orb-three"></div>
+<main class="page">
 
-    <!-- LEFT: RED PANEL + GLASS VIDEO -->
-    <section class="visual-card" aria-label="AN THAI">
+  <div class="orb orb-one"></div>
+  <div class="orb orb-two"></div>
+  <div class="orb orb-three"></div>
 
+  <!-- LEFT RED PANEL -->
+  <section class="visual-card">
+
+    <h1 class="headline">
+      Tích lũy điểm thưởng,<br>
+      thêm nhiều quyền lợi<br>
+      thiết thực.
+    </h1>
+
+    <div class="video-area">
       <video
         autoplay
         muted
         loop
         playsinline
         preload="auto"
-        aria-label="Hiệu ứng thủy tinh đỏ"
+        aria-label="Hiệu ứng thủy tinh đỏ AN THAI"
       >
         <source
           src="./gemini_generated_video_e01c35c6.mp4"
@@ -402,111 +396,109 @@
         >
         Trình duyệt không hỗ trợ video.
       </video>
+    </div>
 
-      <h1 class="headline">
-        Tích lũy điểm thưởng,<br>
-        thêm nhiều quyền lợi<br>
-        thiết thực.
-      </h1>
+  </section>
 
-    </section>
+  <!-- RIGHT PANEL -->
+  <section class="right-panel">
 
-    <!-- RIGHT: LOGO + LOGIN -->
-    <section class="right-panel">
+    <div class="brand">
+      <img
+        class="brand-logo"
+        src="./logo.svg"
+        alt="AN THAI - Hệ thống tích điểm"
+      >
+    </div>
 
-      <div class="brand">
-        <img
-          class="brand-logo"
-          src="./logo.svg"
-          alt="AN THAI - Hệ thống tích điểm"
+    <form class="login-form" id="loginForm">
+
+      <div class="field">
+        <label for="username">Tên đăng nhập</label>
+        <input
+          id="username"
+          name="username"
+          type="text"
+          placeholder="Nhập tên đăng nhập"
+          autocomplete="username"
+          required
         >
       </div>
 
-      <form class="login-form" id="loginForm">
+      <div class="field">
+        <label for="password">Mật khẩu</label>
 
-        <div class="field">
-          <label for="username">Tên đăng nhập</label>
-
+        <div class="password-wrap">
           <input
-            id="username"
-            name="username"
-            type="text"
-            placeholder="Nhập tên đăng nhập"
-            autocomplete="username"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Nhập mật khẩu"
+            autocomplete="current-password"
             required
           >
+
+          <button
+            type="button"
+            class="toggle-password"
+            id="togglePassword"
+            aria-label="Hiện mật khẩu"
+          >◉</button>
         </div>
+      </div>
 
-        <div class="field">
-          <label for="password">Mật khẩu</label>
+      <button type="submit" class="login-button">
+        Đăng nhập
+      </button>
 
-          <div class="password-wrap">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Nhập mật khẩu"
-              autocomplete="current-password"
-              required
-            >
+      <p
+        class="message"
+        id="message"
+        role="status"
+      ></p>
 
-            <button
-              type="button"
-              class="toggle-password"
-              id="togglePassword"
-              aria-label="Hiện mật khẩu"
-            >◉</button>
-          </div>
-        </div>
+    </form>
 
-        <button type="submit" class="login-button">
-          Đăng nhập
-        </button>
+  </section>
 
-        <p class="message" id="message" role="status"></p>
+</main>
 
-      </form>
+<script>
+const passwordInput =
+  document.getElementById("password");
 
-    </section>
+const toggleButton =
+  document.getElementById("togglePassword");
 
-  </main>
+const loginForm =
+  document.getElementById("loginForm");
 
-  <script>
-    const passwordInput =
-      document.getElementById("password");
+const message =
+  document.getElementById("message");
 
-    const toggleButton =
-      document.getElementById("togglePassword");
+toggleButton.addEventListener("click", () => {
+  const hidden =
+    passwordInput.type === "password";
 
-    const loginForm =
-      document.getElementById("loginForm");
+  passwordInput.type =
+    hidden ? "text" : "password";
 
-    const message =
-      document.getElementById("message");
+  toggleButton.setAttribute(
+    "aria-label",
+    hidden ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+  );
+});
 
-    // Show or hide password
-    toggleButton.addEventListener("click", () => {
-      const hidden =
-        passwordInput.type === "password";
+// Demo only, no real authentication
+loginForm.addEventListener("submit", (event) => {
+  event.preventDefault();
 
-      passwordInput.type =
-        hidden ? "text" : "password";
+  message.textContent =
+    "Giao diện đã hoạt động. Cần kết nối hệ thống xác thực để đăng nhập.";
 
-      toggleButton.setAttribute(
-        "aria-label",
-        hidden ? "Ẩn mật khẩu" : "Hiện mật khẩu"
-      );
-    });
+  message.style.display = "block";
+});
+</script>
 
-    // Demo only: authentication is not connected
-    loginForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      message.textContent =
-        "Giao diện đã hoạt động. Cần kết nối hệ thống xác thực để đăng nhập.";
-
-      message.style.display = "block";
-    });
-  </script>
 </body>
 </html>
